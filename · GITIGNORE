@@ -1,0 +1,15 @@
+# Generated output (GitHub Actions generates this, don't commit it)
+sectoral_news_dashboard.html
+_site/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
