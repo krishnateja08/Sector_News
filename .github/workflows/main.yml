@@ -1,0 +1,71 @@
+name: Build & Deploy Sectoral News Dashboard
+
+on:
+  # Run automatically every 4 hours
+  schedule:
+    - cron: "0 */4 * * *"
+
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+
+  # Also run on every push to main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # ── 1. Checkout repo ──────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Set up Python ──────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # ── 3. Install dependencies ───────────────────────
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      # ── 4. Run the dashboard generator ───────────────
+      - name: Generate dashboard HTML
+        run: |
+          python sectoral_news_dashboard.py
+
+      # ── 5. Prepare output folder for Pages ───────────
+      - name: Prepare site folder
+        run: |
+          mkdir -p _site
+          cp sectoral_news_dashboard.html _site/index.html
+          # Copy any extra static assets if you add them later
+          if [ -d static ]; then cp -r static _site/; fi
+
+      # ── 6. Upload artifact for GitHub Pages ──────────
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      # ── 7. Deploy to GitHub Pages ─────────────────────
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
