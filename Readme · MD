@@ -1,0 +1,122 @@
+# 📊 Sectoral News Dashboard
+
+A **Bloomberg Terminal-style** live news dashboard for Indian stock market sectors — auto-deployed to GitHub Pages every 4 hours.
+
+🔗 **Live Site:** `https://<your-username>.github.io/<repo-name>/`
+
+---
+
+## 🗂️ Sectors Covered
+
+| Sector | Key Companies |
+|--------|--------------|
+| 🤖 AI | OpenAI, NVIDIA, Anthropic, Google DeepMind |
+| 🏦 Bank | HDFC, ICICI, SBI, Axis, Kotak, RBI |
+| 💻 IT | TCS, Infosys, Wipro, HCL, LTIMindtree |
+| 🚗 Auto | Maruti, Tata Motors, Mahindra, Bajaj, Hero |
+| 💊 Pharma | Sun Pharma, Cipla, Dr Reddy, Lupin, Biocon |
+| ⚙️ Metals | Tata Steel, JSW, Hindalco, Vedanta, SAIL |
+| 🛒 FMCG | HUL, ITC, Nestle, Dabur, Britannia |
+| 🛢️ Oil & Gas | ONGC, Reliance, BPCL, HPCL, GAIL |
+| ⚡ Power | NTPC, Adani Power, Tata Power, PGCIL |
+| 🏗️ Infra | L&T, NHAI, Adani Ports, GMR, IRB |
+| 🏛️ Cement | UltraTech, ACC, Ambuja, Shree Cement |
+| 🎨 Paint | Asian Paints, Berger, Kansai, Nerolac |
+| 🏠 Cons | DLF, Godrej Properties, Havells, Voltas |
+| 📡 Telecom | Jio, Airtel, Vodafone Idea, 5G, TRAI |
+| 📊 Other | Nifty, Sensex, Economy, RBI, Budget |
+
+---
+
+## ⚙️ How It Works
+
+```
+GitHub Actions (every 4h)
+        │
+        ▼
+python sectoral_news_dashboard.py
+        │   fetches RSS feeds (ET, Mint, Google News)
+        │   filters by sector keywords
+        │   generates sectoral_news_dashboard.html
+        ▼
+GitHub Pages → index.html (live site)
+```
+
+- **No API key required** — uses public RSS feeds
+- **Keyword filtering** — only sector-relevant articles shown per tab
+- **Auto-refreshes** every 4 hours via GitHub Actions cron
+
+---
+
+## 🚀 Setup Instructions
+
+### 1. Fork / Clone this repo
+
+```bash
+git clone https://github.com/<your-username>/<repo-name>.git
+cd <repo-name>
+```
+
+### 2. Enable GitHub Pages
+
+1. Go to your repo → **Settings** → **Pages**
+2. Under **Source**, select **GitHub Actions**
+3. Save
+
+### 3. Enable GitHub Actions
+
+1. Go to **Actions** tab in your repo
+2. Click **"I understand my workflows, go ahead and enable them"** if prompted
+
+### 4. Trigger the first build
+
+Either:
+- Push any commit to `main`, OR
+- Go to **Actions** → **Build & Deploy Sectoral News Dashboard** → **Run workflow**
+
+Your live site will be available at:
+```
+https://<your-username>.github.io/<repo-name>/
+```
+
+---
+
+## 🏃 Run Locally
+
+```bash
+pip install requests
+python sectoral_news_dashboard.py
+# Opens sectoral_news_dashboard.html in current folder
+```
+
+---
+
+## 📁 Repo Structure
+
+```
+├── sectoral_news_dashboard.py   # Main script
+├── .github/
+│   └── workflows/
+│       └── deploy.yml           # Auto-build & deploy workflow
+├── README.md
+└── .gitignore
+```
+
+---
+
+## 🛠️ Customisation
+
+- **Change refresh frequency:** Edit the `cron` value in `deploy.yml`
+  - Every 2h: `"0 */2 * * *"`
+  - Every 6h: `"0 */6 * * *"`
+  - Every day at 6am IST (12:30 UTC): `"30 0 * * *"`
+
+- **Add/remove sectors:** Edit the `SECTORS` list in `sectoral_news_dashboard.py`
+
+- **Tune keyword filters:** Edit `SECTOR_KEYWORDS` in `sectoral_news_dashboard.py`
+
+---
+
+## 📄 License
+
+MIT — free to use and modify.
